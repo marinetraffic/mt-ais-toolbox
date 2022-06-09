@@ -1,0 +1,43 @@
+{
+  "grids_path": "data/samples/99_metadata/",
+  "geometry_file_path": "data/samples/cyclades.json",
+  "ais_decoded_path": "data/samples/00_decoded/*.csv",
+  "ais_path": "data/samples/01_merged/",
+  "ais_cleaned_path": "data/samples/02_clean/",
+  "density_path": "data/samples/03_density/",
+  "colors_files_path": "config/colormaps/",
+  "ais_stats_path": "data/samples/99_metadata/",
+  "recompute_preprocessed_data": false, 
+  "empty_fields": true,
+  "invalid_movement_fields": true,
+  "invalid_mmsi": true,
+  "remove_special_characters": true,
+  "land_mask": true,
+  "downsample": true,
+  "noise_filter": true,
+  "timeframe": false,
+  "min_positions": 10,
+  "downsample_rate": 180000,
+  "false_mmsi": [
+    "000000000",
+    "111111111",
+    "222222222",
+    "333333333",
+    "444444444",
+    "555555555",
+    "666666666",
+    "777777777",
+    "888888888",
+    "999999999",
+    "123456789",
+    "0.12345",
+    "1193046"
+  ],
+  "grid_edge_lengths": [
+     5000
+  ],
+  "max_threads": 1,
+  "density_method": "time_at_cells",
+  "density_vessel_types": ["All"]
+ 
+}
