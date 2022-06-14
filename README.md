@@ -6,13 +6,7 @@
  This document provides a brief overview of process, as well as the data and tools required, to generate density maps using "Marinetraffic AIS density map toolbox". The data used in this overview are decoded historical Automatic Identification System (AIS) data.
  
 
-Acknowledgement : ***This work has been partially funded by the European Maritime and Fisheries Fund (EMFF) through service contract No. CINEA/EMFF/2020/3.1.16/Lot2/SI2.850940***
 
-## License Terms 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
-## Technical Specifications
-- Python version 3.8.6 or later. & installation of "requirements.txt" packages
-- GDAL 3.0.4
 
 ## Installation - prerequisites
 
@@ -46,7 +40,7 @@ This package includes
 	- Load AIS data
 	- Clean the data
 	- Generate grid
-	- <s>Generate density map using GDAL</s>
+	- Generate density map using GDAL
 	
 	
  
@@ -107,12 +101,11 @@ The filters provided by the Marinetraffic AIS toolbox include:
 	- 
 - The AIS data are down-sampled according to the configuration ratio provided (in milliseconds). The downsampling is performed so that two consecutive messages from the same vessel could not have a time interval shorter than the threshold. Naturally, as a result of this process duplicate signals are removed.
 - Messages with wrong MMSI numbers are removed (according to the list provided in the configuration file).
-- <s> Special characters and diacritics were removed from names and call signs.</s>
-- Signals with invalid speed and course over ground(SOG/COG) values are removed (0<=SOG<=80 knots / 0<=COG<360 degreed).
+- Signals with invalid speed and course over ground(SOG/COG) values are removed.
 - Noise messages were removed. This is achieved by eliminating messages that indicate improbable transitions, i.e. where vessels would have needed to move with a speed over 92.0 knots.
 - Vessels with total messages fewer than a given thredshold are not processed and all their AIS messages are discarded.
 
-The filters to be applied are chosen using the 
+The configuration file given determines which of the above filters would be applied.
 
 
 # Configuration
@@ -125,10 +118,13 @@ The Marinetraffic AIS toolbox configuration file is a json file that consists of
 |:----------|:---------------------------------------------------|:--------------|
 |"geometry_file_path" | Path for geometry file used| in config|
 |"grids_path"| Path for saving grid | in config |
-|"ais_path"|Path of decoded AIS messages directory | in config |
+|"ais_path"|Path of merged AIS messages directory| in config |
 |"ais_cleaned_path"|Path of cleaned AIS messages directory|  in config |
+|"ais_decoded_path"| Path of merged AIS messages directory |  in config |
+|"density_path"| Path of resulting density files directory |  in config |
+|"colors_files_path"| Path of density file (TIFF) color files directory   |  in config |
 |"ais_stats_path"|Path for the statistics directory|  in config |
-|"out_crs"| Output coordinate reference system code (CRS 3035 or 3857) | 3035 |
+|"out_crs"| Output coordinate reference system code (CRS 3035 or 3857(not tested) ) | 3035 |
 |"empty_fields"|If true removes messages with empty fields | false |
 |"invalid_movement_fields"|If true removes messages with invalid values in COG,SOG,LON,LAT fields| false |
 |"invalid_mmsi"|If true removes messages with invalid mmsi values (see below)| false |
@@ -144,11 +140,12 @@ The Marinetraffic AIS toolbox configuration file is a json file that consists of
 |"min_positions"|Number of minimum AIS messages for the file to be included in the cleaning process| 10|
 |"max_threads"| Maximium number of threads during execution; only for the processes that work in parallel| 4 |
 |"density_method"| Method to be used for density maps 'vessels_count'(default) or 'time_at_cells' |'vessels_count' |
-|"density_vessel_types"|['All', 'Cargo', 'Tanker', 'Dredging', 'HSC', 'Fishing', 'Military_Law', 'Passenger', 'Pleasure', 'Sailing', 'Service', 'Tug', 'Unknown', 'Other']|'All'|
+|"density_vessel_types"|List of types of vessels to be considered while creating density maps. One map will be generated for each vessel type, based on the type codes provided in the AIS. The 'All' option includes all vessels regardless their type. Options include: ['All', 'Cargo', 'Tanker', 'Dredging', 'HSC', 'Fishing', 'Military_Law', 'Passenger', 'Pleasure', 'Sailing', 'Service', 'Tug', 'Unknown', 'Other']|'All'|
+
+Directory ('colors_files_path')  with color files should include a TXT file, named 'colors_{GEL}.txt' with GEL is the each grid edge length in meters (example: 'colors_1000.txt'). Each file should include the density thresholds followed by the approapriate color, expressed as RGB and with an opacity indicator (0-255).
 
 
-
-# Licenses - Repuirements extractions
+# Licenses - Requirements
 You may extract requirements from imports using the command : *pipreqs --force*
 
 You may use the *pip-licenses* package to check dependencies licences  
@@ -163,3 +160,13 @@ results in :
 	haversine  2.5.1    MIT License 
 	pandas     1.4.2    BSD License 
 	pyproj     3.3.1    MIT License 
+
+
+## Acknowledgement :
+ ***This work has been partially funded by the European Maritime and Fisheries Fund (EMFF) through service contract No. CINEA/EMFF/2020/3.1.16/Lot2/SI2.850940***
+
+## License Terms 
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+## Technical Specifications
+- Python version 3.8.6 or later. & installation of "requirements.txt" packages
+- GDAL 3.0.4
