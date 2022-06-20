@@ -147,13 +147,10 @@ if __name__ == "__main__":
     config_file = open(sys.argv[1], "r",encoding='utf-8')
     config = json.load(config_file)
 
-    if(len(sys.argv) == 2):
-        ais_file_path = ""
-    else:
-        ais_file_path = sys.argv[2]
+
     
 
-    logging.warning("Calculating density for " + ais_file_path)
+    # logging.warning("Calculating density for " + config["ais_file_path"])
     t_0 = time.time()
-    get_density(config, ais_files_path=ais_file_path)
+    get_density(config)
     logging.debug(time.time() - t_0)
