@@ -262,14 +262,15 @@ def clean_data(_config, _seas_tree=[], grid_edge_length=-1):
         initargs=(_config, _seas_tree, _project),
     ) as executor:
         for f in os.listdir(ais_file):
-            file_mmsi = f.split("/")[-1].split(".")[-2]
-            if fsizes.get(file_mmsi, minPos + 1) < minPos:
-                stats_list.append(
-                    [fsizes.get(file_mmsi, 0), 0, 0, 0, 0, 0, 0, 0, 0, file_mmsi]
-                )
-                continue
+            if f.endswith(".csv"):
+                file_mmsi = f.split("/")[-1].split(".")[-2]
+                if fsizes.get(file_mmsi, minPos + 1) < minPos:
+                    stats_list.append(
+                        [fsizes.get(file_mmsi, 0), 0, 0, 0, 0, 0, 0, 0, 0, file_mmsi]
+                    )
+                    continue
 
-            futures[executor.submit(clean_mmsi, (f.split(".")[0]))] = file_mmsi
+                futures[executor.submit(clean_mmsi, (f.split(".")[0]))] = file_mmsi
 
         for future in as_completed(futures):
             try:
