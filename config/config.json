@@ -1,7 +1,7 @@
 {
   "grids_path": "data/samples/99_metadata/",
   "geometry_file_path": "data/samples/cyclades.json",
-  "ais_decoded_path": "data/samples/00_decoded/*.csv",
+  "ais_decoded_path": "data/samples/00_decoded/*.bz2",
   "ais_path": "data/samples/01_merged/",
   "ais_cleaned_path": "data/samples/02_clean/",
   "density_path": "data/samples/03_density/",
@@ -34,10 +34,11 @@
     "1193046"
   ],
   "grid_edge_lengths": [
-     5000
+     1000
   ],
   "max_threads": 1,
   "density_method": "time_at_cells",
-  "density_vessel_types": ["All"]
+  "density_vessel_types": ["All"],
+  "min_positions_density":5
  
 }
