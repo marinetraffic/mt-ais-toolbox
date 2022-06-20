@@ -12,10 +12,13 @@
 
 We strongly recommend running this module in virtual environment to ensure packages compatibility. 
 	
-	python3 -m venv venv #create a virtual environment
-	source venv/bin/activate #activate the environment
-	cd mt-ais-toolbox/
-	#pip install -r requirements.txt # install required packages --not required
+	python3 -m venv venv;
+	source venv/bin/activate;
+	git clone https://github.com/marinetraffic/mt-ais-toolbox.git;
+	cd mt-ais-toolbox/;
+	pip install -e .;
+	export USE_PYGEOS=1;
+
 
 Package installation in the virtual environment
 
@@ -25,8 +28,12 @@ To deactivate the virtual environment use:
 
 	deactivate
 
+The package can also be installed directly from our gitub repo with the following command, however additional 
+changes in paths are required to run the following examples.
 
- 
+	pip install git+https://github.com/marinetraffic/mt-ais-toolbox.git;
+
+
 Check also the [configuration section below](#Configuration)
 
 Note: it is recommended to set the following system variable to speed up pygeos spatial joins:
