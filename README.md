@@ -15,17 +15,23 @@ We strongly recommend running this module in virtual environment to ensure packa
 	python3 -m venv venv #create a virtual environment
 	source venv/bin/activate #activate the environment
 	cd mt-ais-toolbox/
-	pip install -r requirements.txt # install required packages
+	#pip install -r requirements.txt # install required packages --not required
 
 Package installation in the virtual environment
+
 	pip install -e .
 
 To deactivate the virtual environment use:
 
 	deactivate
- 
- Check also the [configuration section below](./#Configuration)
 
+
+ 
+Check also the [configuration section below](./#Configuration)
+
+Note: it is recommended to set the following system variable to speed up pygeos spatial joins:
+
+	export USE_PYGEOS=1
 
 ## Quick Start
 
@@ -45,7 +51,7 @@ This package includes
 	
  
  
-Each step of our approach requires some parameters that include: paths for input files and output directories, flags regarding the operation to be executed, additional thresholds required during execution (e.g. downsampling rate). All that information should be included within a configuration file, that it should be passed as an argument during execution ('PATH/TO/CONFIG').
+Each step of our approach requires some parameters that include: paths for input files and output directories, flags regarding the operation to be executed, additional thresholds required during execution (e.g. downsampling rate). All that information should be included within a configuration file, that it should be passed as an argument during execution (e.g. config/config.json).
 
 
 # The process
@@ -75,7 +81,11 @@ In case the message is a positional report:
 
 	t,station,channel_code,mmsi,type,data_type,lon;lat;heading;course;speed;rot_direction;rot;navigation_status
 
-	
+
+<img src="./docs/figures/raw_data.png" alt="Raw Dataset example" width="800"/>
+
+*Original sample dataset for a single vessel.*
+
 
 
 
@@ -86,6 +96,10 @@ The cleaning process can be executed by:
 	
 	python -m mt.cleaning.data_cleaning config/config.json 
 
+<img src="./docs/figures/downsampled_data.png" alt="Cleaned and Downsampled dataset" width="800"/>
+
+*Clean dataset (green) for the same vessel. The red messages are filtered out.*
+
 
 ## Density maps generation
 The density map generation step reads the cleaned ais files and generates density maps with respect to the selected method in the configuration file. There are two options available, the first one measures the number of vessels within each cell while the second one aggregates the time spend within each cell for of all vessels crossing it. 
@@ -94,11 +108,27 @@ The density map generation step reads the cleaned ais files and generates densit
 	python -m mt.density.export_density_maps config/config.json 
 
 
+
+<img src="./docs/figures/data_multiple_vessels.png" alt="1km side grid used to calculate density maps" width="800"/>
+
+*1km side grid used to calculate density maps. Cleaned positions of three vessels*
+
+
+<img src="./docs/figures/rasterize.png" alt="The rasterization process" width="800"/>
+
+*The rasterization process.*
+
+
+<img src="./docs/figures/raster_map.png" alt="The resulting map of total vessel in geo-referenced tiff format" width="800"/>
+
+*The resulting map of time_at_cells method in geo-referenced tiff format and colormap as provided in configuration.*
+
+
 ### Filters
 The filters provided by the Marinetraffic AIS toolbox include:
 - Removing all messages where with empty coordinates, timestamp, speed or course fields.
-- Removing points outside the area of interest (as defined from the configuration file), including points on land. There are four options available regarding the  
-	- 
+- Removing points outside the area of interest (as defined from the configuration file), including points on land. 
+	- Supported geometry file types are (geopackage,geodatabase,geojson).
 - The AIS data are down-sampled according to the configuration ratio provided (in milliseconds). The downsampling is performed so that two consecutive messages from the same vessel could not have a time interval shorter than the threshold. Naturally, as a result of this process duplicate signals are removed.
 - Messages with wrong MMSI numbers are removed (according to the list provided in the configuration file).
 - Signals with invalid speed and course over ground(SOG/COG) values are removed.
