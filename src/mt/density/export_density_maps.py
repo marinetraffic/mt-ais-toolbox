@@ -29,10 +29,11 @@ class RasterConverter:
         colors_path=None,
     ):
         """
-           csv to raster function. It creates       
+           csv to raster function.     
         """
 
         original_pwd = os.getcwd()
+        colors_path_absolute = f"{os.path.join(original_pwd,colors_path)}/colors_{step}.txt"
         print(original_pwd)
         try:
 
@@ -58,8 +59,8 @@ class RasterConverter:
                 cmd = f"gdal_rasterize -tr {step} {step} -a_nodata {no_data} -te {str(geometry_bound)[1:-1]} -a_srs {srs} -ot Float32 -a {col} {filename[:-4]}.vrt {filename[:-4]}.tif"
                 print(cmd)
                 subprocess.call(cmd, shell=True)
-                if(colors_path):
-                    cmd = f"gdaldem color-relief {filename[:-4]}.tif {colors_path}colors_{step}.txt {filename[:-4]}_colored.tif -alpha"
+                if os.path.exists(colors_path_absolute):
+                    cmd = f"gdaldem color-relief {filename[:-4]}.tif {colors_path_absolute} {filename[:-4]}_colored.tif -alpha"
                     subprocess.call(cmd, shell = True)
                     os.remove(f"{filename[:-4]}.tif")
                 os.remove(f"{filename[:-4]}.vrt")
@@ -105,15 +106,11 @@ if __name__ == "__main__":
     config_file = open(sys.argv[1], "r",encoding='utf-8')
     config = json.load(config_file)
 
-    if len(sys.argv) == 2:
-        out_name = ""
-    else:
-        out_name = sys.argv[2]
 
 
-    print("Creating density maps for " + out_name)
+    #print("Creating density maps for " + out_name)
     t_0 = time.time()
-    export_denity_map(config, out_name)
+    export_denity_map(config, "")
     print(time.time() - t_0)
 
 
