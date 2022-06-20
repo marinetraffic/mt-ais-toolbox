@@ -27,7 +27,7 @@ To deactivate the virtual environment use:
 
 
  
-Check also the [configuration section below](./#Configuration)
+Check also the [configuration section below](#Configuration)
 
 Note: it is recommended to set the following system variable to speed up pygeos spatial joins:
 
