@@ -1,9 +1,9 @@
-# Marinetraffic density maps toolbox
+# Marinetraffic AIS toolbox
 
 
 ## Overview
 
- This document provides a brief overview of process, as well as the data and tools required, to generate density maps using "Marinetraffic AIS density map toolbox". The data used in this overview are decoded historical Automatic Identification System (AIS) data.
+ This document provides a brief overview of process, as well as the data and tools required, to generate density maps using "Marinetraffic AIS toolbox". The data used in this overview are decoded historical Automatic Identification System (AIS) data.
  
 
 
@@ -40,6 +40,10 @@ Note: it is recommended to set the following system variable to speed up pygeos 
 
 	export USE_PYGEOS=1
 
+## Technical Specifications
+- Python version 3.8.6 or later. & installation of "requirements.txt" packages
+- GDAL 3.0.4 ( In ubuntu systems you may execute *apt-get install gdal-bin libgdal-dev*)
+	
 ## Quick Start
 
 This package includes 
@@ -50,10 +54,10 @@ This package includes
 	- runtime parameters regarding the data cleaning and filtering process
 
 - Implementations for:
-	- Load AIS data
-	- Clean the data
-	- Generate grid
-	- Generate density map using GDAL
+	- Loading AIS data
+	- Cleaning the data
+	- Generating grid
+	- Generating density map using GDAL
 	
 	
  
@@ -65,7 +69,7 @@ Each step of our approach requires some parameters that include: paths for input
 ## Loading and merging data
 
 
-For the loading of the AIS messages compressed comma-separated values files should be included (format .csv.bz2). These files should have the messages ordered by their timestamps. In case there are multiple input files they must be order alphabetically so that files with earlier messages come first.
+For the loading of the AIS messages compressed comma-separated values files should be included (format .csv.bz2). These files should have the messages ordered by their timestamps. In case there are multiple input files they must be ordered alphabetically so that files with earlier messages come first.
 
 
 
@@ -97,7 +101,7 @@ In case the message is a positional report:
 
 
 ## Cleaning erroneous or incomplete messages (Cleaning)
-Clean merged data: after merging all AIS messages should go through the filters indicated in the config file. These may include: checking validity of movement fields, validity of vessel ID (MMSI), the land mask and others (see **Filters** section below). Input and output directories and the filters to be applied are defined on the conifguration file given. 
+Clean merged data: after merging all AIS messages should go through the filters indicated in the config file. These may include: checking validity of movement fields, validity of vessel ID (MMSI), the land mask and others (see **Filters** section below). Input and output directories and the filters to be applied are defined on the configuration file given. 
 The cleaning process can be executed by:
 
 	
@@ -109,7 +113,7 @@ The cleaning process can be executed by:
 
 
 ## Density maps generation
-The density map generation step reads the cleaned ais files and generates density maps with respect to the selected method in the configuration file. There are two options available, the first one measures the number of vessels within each cell while the second one aggregates the time spend within each cell for of all vessels crossing it. 
+The density map generation step reads the cleaned ais files and generates density maps with respect to the selected method in the configuration file. There are two options available, the first one measures the number of vessels within each cell while the second one aggregates the time spent within each cell of all vessels crossing it. 
 
 	
 	python -m mt.density.export_density_maps config/config.json 
@@ -133,14 +137,14 @@ The density map generation step reads the cleaned ais files and generates densit
 
 ### Filters
 The filters provided by the Marinetraffic AIS toolbox include:
-- Removing all messages where with empty coordinates, timestamp, speed or course fields.
+- Removing all messages with empty coordinates, timestamp, speed or course fields.
 - Removing points outside the area of interest (as defined from the configuration file), including points on land. 
 	- Supported geometry file types are (geopackage,geodatabase,geojson).
 - The AIS data are down-sampled according to the configuration ratio provided (in milliseconds). The downsampling is performed so that two consecutive messages from the same vessel could not have a time interval shorter than the threshold. Naturally, as a result of this process duplicate signals are removed.
 - Messages with wrong MMSI numbers are removed (according to the list provided in the configuration file).
 - Signals with invalid speed and course over ground(SOG/COG) values are removed.
 - Noise messages were removed. This is achieved by eliminating messages that indicate improbable transitions, i.e. where vessels would have needed to move with a speed over 92.0 knots.
-- Vessels with total messages fewer than a given thredshold are not processed and all their AIS messages are discarded.
+- Vessels with total messages fewer than a given threshold are not processed and all their AIS messages are discarded.
 
 The configuration file given determines which of the above filters would be applied.
 
@@ -179,7 +183,7 @@ The Marinetraffic AIS toolbox configuration file is a json file that consists of
 |"density_method"| Method to be used for density maps 'vessels_count'(default) or 'time_at_cells' |'vessels_count' |
 |"density_vessel_types"|List of types of vessels to be considered while creating density maps. One map will be generated for each vessel type, based on the type codes provided in the AIS. The 'All' option includes all vessels regardless their type. Options include: ['All', 'Cargo', 'Tanker', 'Dredging', 'HSC', 'Fishing', 'Military_Law', 'Passenger', 'Pleasure', 'Sailing', 'Service', 'Tug', 'Unknown', 'Other']|'All'|
 
-Directory ('colors_files_path')  with color files should include a TXT file, named 'colors_{GEL}.txt' with GEL is the each grid edge length in meters (example: 'colors_1000.txt'). Each file should include the density thresholds followed by the approapriate color, expressed as RGB and with an opacity indicator (0-255).
+Directory ('colors_files_path')  with color files should include a TXT file, named 'colors_{GEL}.txt' with GEL is the each grid edge length in meters (example: 'colors_1000.txt'). Each file should include the density thresholds followed by the appropriate color, expressed as RGB and with an opacity indicator (0-255).
 
 
 # Licenses - Requirements
@@ -204,6 +208,3 @@ results in :
 
 ## License Terms 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
-## Technical Specifications
-- Python version 3.8.6 or later. & installation of "requirements.txt" packages
-- GDAL 3.0.4
