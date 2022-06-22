@@ -12,10 +12,10 @@
 
 We strongly recommend running this module in virtual environment to ensure packages compatibility. 
 	
-	python3 -m venv venv;
-	source venv/bin/activate;
 	git clone https://github.com/marinetraffic/mt-ais-toolbox.git;
 	cd mt-ais-toolbox/;
+	python3 -m venv .venv;
+	source venv/bin/activate;
 	pip install -e .;
 	export USE_PYGEOS=1;
 
