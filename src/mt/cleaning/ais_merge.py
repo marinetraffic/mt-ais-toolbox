@@ -88,10 +88,11 @@ def merge_pos_and_static(in_names, out_name, stats_name):
 if __name__ == "__main__":
     import sys
     import glob
-    import resource
+    import psutil
 
-    soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
-    resource.setrlimit(resource.RLIMIT_NOFILE, (hard, hard))
+    p = psutil.Process()
+    soft, hard = p.rlimit(psutil.RLIMIT_NOFILE)
+    p.rlimit(psutil.RLIMIT_NOFILE, (hard, hard))
     
     config_file = open(sys.argv[1], "r",encoding="utf-8")
     CONFIG = json.load(config_file)

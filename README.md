@@ -40,9 +40,19 @@ Note: it is recommended to set the following system variable to speed up pygeos 
 
 	export USE_PYGEOS=1
 
+### Installation on Windows OS
+
+This toolbox relies on GDAL library, for rasterization processs mainly, thus installing it in windows operating system will require 
+a working installation of GDAL across your system. 
+
+To use this module in windows you are required to have a working GDAL installation before installing this toolbox. A workaround is installing GDAL through OSGeo4w (https://trac.osgeo.org/osgeo4w/) and define the appropriate paths to use the included python version instead. In addition, you  have to include the bin directory of osgeo installation folder to you PATH environmental variable.
+
+
 ## Technical Specifications
 - Python version 3.8.6 or later. & installation of "requirements.txt" packages
 - GDAL 3.0.4 ( In ubuntu systems you may execute *apt-get install gdal-bin libgdal-dev*)
+
+
 	
 ## Quick Start
 

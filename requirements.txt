@@ -9,4 +9,4 @@ pyproj>=3.3.1
 docopt>=0.6.2
 haversine>=2.5.1
 pygeos>=0.10.2
-
+psutil>=5.9.4
