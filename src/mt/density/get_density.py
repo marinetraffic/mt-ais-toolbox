@@ -77,10 +77,7 @@ def get_density(config, gridEdgeLength=-1, ais_files_path=''):
 
 
     t_0 = time.time()
-    _results = grid[['gridID']]
-    _results = _results.assign(density=0)
-    _results.set_index('gridID', inplace=True)
-    _results.rename_axis(None, axis=0, inplace=True)
+    _results = {}
 
     results = {}
     for type in resTypes:
@@ -102,12 +99,17 @@ def get_density(config, gridEdgeLength=-1, ais_files_path=''):
         count=0
         for future in as_completed(futures):
             # try:
-                res, resType = future.result()
-                # t_1 = time.time()
-                if('All' in resTypes):
-                    results['All'] = results['All'].add(res, fill_value=0)
-                if(resType in resTypes):
-                    results[resType] = results[resType].add(res, fill_value=0)
+                res_, resType = future.result()
+                if(len(res_)!=0):
+                    # t_1 = time.time()
+                    res = res_.to_dict()['density']
+                    for k, v in res.items():
+                        if('All' in resTypes):
+                            cur = results['All'].get(k, 0)
+                            results['All'][k] = v+cur
+                        if(resType in resTypes):
+                            cur = results[resType].get(k, 0)
+                            results[resType][k] = v+cur
                 count+=1
                 if(count%5==0):
                     logging.debug(f"\t{count}:  {futures[future]}")
@@ -125,6 +127,7 @@ def get_density(config, gridEdgeLength=-1, ais_files_path=''):
     grid.drop(columns=['geometry', 'centroid', 'x', 'y'], inplace=True)
     for vType in resTypes:
         outpath = _outpath+'_'+vType+'.csv'
+        results[vType] = pd.DataFrame.from_dict(results[vType], orient='index', columns=['density'])
         results[vType]['gridID'] = results[vType].index
         results[vType] = results[vType].merge(grid, on='gridID')
         results[vType].to_csv(outpath, index=False)
