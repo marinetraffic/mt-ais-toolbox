@@ -304,7 +304,7 @@ def clean_data(_config, _seas_tree=[], grid_edge_length=-1):
     trows = tstats["total_rows"]
     
     if trows != 0:
-        for column, value in tstats.iteritems():
+        for column, value in tstats.items():
             logging.debug("\t%s: %.2f %%" ,column, 100 * value / trows)
     else:
         logging.debug("\tEmpty files given. Exiting..")
