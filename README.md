@@ -185,7 +185,7 @@ The Marinetraffic AIS toolbox configuration file is a json file that consists of
 |"downsample"|If true it enforces downsampling process| false|
 |"downsample_rate"| Downsampling rate (in milli-seconds)| in config (example: 180000 ~ 3 mins) |
 |"noise_filter"|If true it enforces noise filtering process by eliminating messages that indicate improbable transitions|in config |
-|"grid_edge_lengths"|List of grid cell lengths for the grid generation. Each length indicates the size of edge on each dimension (in meters), resulting in a .| in config (example: [500000,200000,10000])|
+|"grid_edge_lengths"|List of grid cell lengths for the grid generation. Each length indicates the size of edge on each dimension (in meters).| in config (example: [500000,200000,10000])|
 |"timeframe"| If true it enforces a filter regarding each messages timestamp. If true, the "start_time"/"end_time" must be defined (using the EPOCH representation - in milliseconds) | false|
 |"start/end_time"| The startin/ending times for the teimframe filter (in milliseconds) | in config (example: 1647592893000)|
 |"min_positions"|Number of minimum AIS messages for the file to be included in the cleaning process| 10|
