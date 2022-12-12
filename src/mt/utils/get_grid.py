@@ -98,9 +98,8 @@ def load_grids(config):
                         seas_list, columns=["geometry"]
                     ).set_crs(out_crs, inplace=True)
 
-                op = "intersects"
                 t_0 = time.time()
-                gridsWithSea = gpd.sjoin(gridsGDF, seas_gdf, how="inner", op=op)
+                gridsWithSea = gpd.sjoin(gridsGDF, seas_gdf, how="inner")
                 gridsWithSea.drop(columns=["index_right"], inplace=True)
                 print("\tIntersected sea geometries with the grids.")
                 print("\t\tExec. time: %1.fsec\t" % (time.time() - t_0))
