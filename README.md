@@ -149,7 +149,7 @@ The density map generation step reads the cleaned ais files and generates densit
 The filters provided by the Marinetraffic AIS toolbox include:
 - Removing all messages with empty coordinates, timestamp, speed or course fields.
 - Removing points outside the area of interest (as defined from the configuration file), including points on land. 
-	- Supported geometry file types are (geopackage,geodatabase,geojson).
+	- We expect a multi-polygon object representing the sea area of interest, in any of the following supported geometry file types: geopackage, geodatabase, geojson.
 - The AIS data are down-sampled according to the configuration ratio provided (in milliseconds). The downsampling is performed so that two consecutive messages from the same vessel could not have a time interval shorter than the threshold. Naturally, as a result of this process duplicate signals are removed.
 - Messages with wrong MMSI numbers are removed (according to the list provided in the configuration file).
 - Signals with invalid speed and course over ground(SOG/COG) values are removed.
