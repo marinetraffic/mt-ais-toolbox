@@ -2,7 +2,7 @@ wheel>=0.38.4
 scipy>=1.7.3
 networkx>=2.5
 Fiona>=1.8.20
-Shapely>=1.8.5
+Shapely==1.8.5
 pandas>=1.4.2
 numpy>=1.22.4
 geopandas>=0.10.2
