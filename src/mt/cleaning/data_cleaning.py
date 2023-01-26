@@ -172,16 +172,7 @@ def clean_mmsi(mmsi):
                 projected = transform(PROJECT, Point(clon, clat))
                 # grid_edge_length: default->10, if different get by user
                 if CONFIG["land_mask"]:
-                    if (
-                        len(
-                            [
-                                o
-                                for o in SEAS_RTREE.query(projected)
-                                if o.contains(projected)
-                            ]
-                        )
-                        == 0
-                    ):
+                    if (len(SEAS_RTREE.query(projected, predicate='intersects'))== 0):
                         r_geo += 1
                         continue
 
