@@ -206,7 +206,7 @@ You may use the *pip-licenses* package to check dependencies licences
 results in :
 
 	Fiona      1.8.21   BSD License 
-	Shapely    1.8.2    BSD License 
+	Shapely    2.0.0    BSD License 
 	geopandas  0.10.2   BSD         
 	haversine  2.5.1    MIT License 
 	pandas     1.4.2    BSD License 
